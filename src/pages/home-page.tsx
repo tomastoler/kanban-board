@@ -1,5 +1,5 @@
-import AddColumnForm from "../components/AddColumnForm";
-import Column from "../components/Column";
+import AddColumnForm from "../components/add-column-form";
+import Column from "../components/column";
 import { useTaskStore } from "../store/task-store";
 
 export default function HomePage() {

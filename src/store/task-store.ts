@@ -20,6 +20,7 @@ interface ITaskStore {
 	addColumn: (newColumn: string) => void;
 	removeColumn: (oldColumn: string) => void;
 	renameColumn: (oldColumn: string, newColumn: string) => void;
+	addTask: (column: string, texttask: string, idtask: number) => void;
 }
 
 export const useTaskStore = create<ITaskStore>()(
@@ -77,13 +78,33 @@ export const useTaskStore = create<ITaskStore>()(
 				removeColumn(oldColumn);
 
 				set(() => ({
-					// columnNames: [...state.columnNames, newColumn.toLowerCase()],
 					columnNames: [...Object.entries(columnTasks).sort((c1, c2) =>
 						c1[1].id > c2[1].id ? 1 : c1[1].id < c2[1].id ? -1 : 0
 					).map(c => c[0])],
 					columnTasks
 				}));
 			},
+
+			// * add a task to a column [done->false]
+			addTask: (column, texttask, idtask) => {
+
+				const { columnNames, columnTasks } = get()
+
+				console.log(columnTasks);
+				console.log(columnTasks[column]);
+				
+
+				columnTasks[column.toLowerCase()].tasks.push({
+					id: idtask,
+					text: texttask,
+					done: false
+				})
+
+				set(() => ({
+					columnNames,
+					columnTasks
+				}))
+			}
 		}),
 		{
 			name: "task-store",

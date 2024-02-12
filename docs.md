@@ -8,16 +8,19 @@
 - [tailwind](https://tailwindcss.com/)
 
 ## Ideas
-- ordenar tareas
-- cambiar texto de tarea
-- añadir tareas
-- mover tareas
 - eliminar tareas
+- marcar tareas como hechas
+- cambiar texto de tarea
+- mover tareas
 - borrar todo
+- ordenar tareas
 - elegir imagen del fondo
+- exportar tabla
+- importar tabla
 
 ## ideas implementadas
 - añadir columnas [11-2-24]
 - no agregar columnas sin titulos [11-2-24]
 - eliminar columnas [11-2-24]
 - cambiar titulo de columna [11-2-24]
+- añadir tareas [12-2-24]

@@ -1,15 +1,20 @@
 import React from "react";
 import { useState } from "react";
 import { useTaskStore } from "../store/task-store";
+import AddTaskForm from "./add-task-form";
+import Task from "./task";
 
 export default function Column({ title }: { title: string }) {
 	const [showMenu, setShowMenu] = useState(false);
 
 	// * changing the title
     const renameColumn = useTaskStore(state => state.renameColumn)
+	const columnTasks = useTaskStore(state => state.columnTasks)
+
 	const [showTitleForm, setShowTitleForm] = useState(false);
 	const [newTitle, setNewTitle] = useState("");
 	const handleSubmit = (e: React.FormEvent) => {
+		if (newTitle === '') return
 		e.preventDefault();
         renameColumn(title, newTitle)
 		setNewTitle("");
@@ -22,11 +27,12 @@ export default function Column({ title }: { title: string }) {
 				{showTitleForm ? (
 					<form onSubmit={handleSubmit} className="flex">
 						<input
+							className="outline-sky-400 rounded-md font-mono text-sm py-1 px-4"
 							type="text"
 							value={newTitle}
 							onChange={(e) => setNewTitle(e.target.value)}
 						/>
-                        <button type="submit">C</button>
+                        {/* <button type="submit">C</button> */}
 					</form>
 				) : (
 					<h1
@@ -45,6 +51,17 @@ export default function Column({ title }: { title: string }) {
 					<OptionsMenu from={title} closeMenu={setShowMenu} />
 				)}
 			</header>
+
+			{/* Task list */}
+			<div className="flex flex-col w-full h-full gap-2">
+					{columnTasks[title].tasks.map(task => {
+						return <Task from={title} text={task.text} id={task.id} done={task.done} />
+					})}
+			</div>
+
+			{/* add task form */}
+			<AddTaskForm from={title} />
+
 		</div>
 	);
 }

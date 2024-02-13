@@ -55,7 +55,7 @@ export default function Column({ title }: { title: string }) {
 			{/* Task list */}
 			<div className="flex flex-col w-full h-full gap-2">
 					{columnTasks[title].tasks.map(task => {
-						return <Task from={title} text={task.text} id={task.id} done={task.done} />
+						return <Task from={title} text={task.text} id={task.id} done={task.done} key={task.id} />
 					})}
 			</div>
 

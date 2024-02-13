@@ -21,6 +21,7 @@ interface ITaskStore {
 	removeColumn: (oldColumn: string) => void;
 	renameColumn: (oldColumn: string, newColumn: string) => void;
 	addTask: (column: string, texttask: string, idtask: number) => void;
+	removeTask: (column: string, idtask: number) => void;
 }
 
 export const useTaskStore = create<ITaskStore>()(
@@ -29,7 +30,7 @@ export const useTaskStore = create<ITaskStore>()(
 			columnNames: [],
 			columnTasks: {},
 
-			// * add a column
+			// * <Column> add a column
 			addColumn: (newColumn) => {
 				const { columnNames } = get();
 
@@ -52,7 +53,7 @@ export const useTaskStore = create<ITaskStore>()(
 					}));
 				}
 			},
-			// * remove a column
+			// * <Column> remove a column
 			removeColumn: (oldColumn) => {
 				if (oldColumn === "") return;
 
@@ -68,7 +69,7 @@ export const useTaskStore = create<ITaskStore>()(
 				}));
 			},
 
-			// * remane a column
+			// * <Column> remane a column
 			renameColumn: (oldColumn, newColumn) => {
 				const { columnTasks, removeColumn } = get();
 				columnTasks[newColumn] = {
@@ -78,33 +79,57 @@ export const useTaskStore = create<ITaskStore>()(
 				removeColumn(oldColumn);
 
 				set(() => ({
-					columnNames: [...Object.entries(columnTasks).sort((c1, c2) =>
-						c1[1].id > c2[1].id ? 1 : c1[1].id < c2[1].id ? -1 : 0
-					).map(c => c[0])],
-					columnTasks
+					columnNames: [
+						...Object.entries(columnTasks)
+							.sort((c1, c2) =>
+								c1[1].id > c2[1].id
+									? 1
+									: c1[1].id < c2[1].id
+									? -1
+									: 0
+							)
+							.map((c) => c[0]),
+					],
+					columnTasks,
 				}));
 			},
 
-			// * add a task to a column [done->false]
+			// * <Task> add a task to a column [done->false]
 			addTask: (column, texttask, idtask) => {
+				const { columnNames } = get();
 
-				const { columnNames, columnTasks } = get()
-
-				console.log(columnTasks);
-				console.log(columnTasks[column]);
-				
-
-				columnTasks[column.toLowerCase()].tasks.push({
-					id: idtask,
-					text: texttask,
-					done: false
-				})
-
-				set(() => ({
+				set((state) => ({
 					columnNames,
-					columnTasks
-				}))
-			}
+					columnTasks: {
+						[column.toLowerCase()]: {
+							id: state.columnTasks[column].id,
+							tasks: [
+								...state.columnTasks[column].tasks,
+								{
+									id: idtask,
+									text: texttask,
+									done: false,
+								},
+							],
+						},
+					},
+				}));
+			},
+
+			// * <Task> remove a task froma column
+			removeTask: (column, idtask) => {
+				const { columnNames } = get();
+
+				set(state => ({
+					columnNames,
+					columnTasks : {
+						[column]: {
+							id: state.columnTasks[column].id,
+							tasks: [...state.columnTasks[column].tasks.filter(t => t.id !== idtask)]
+						}
+					}
+				}));
+			},
 		}),
 		{
 			name: "task-store",

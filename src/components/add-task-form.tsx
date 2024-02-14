@@ -12,7 +12,7 @@ export default function AddTaskForm({ from }: { from: string }) {
 	const handleSubmit = (e: React.FormEvent) => {
 		e.preventDefault();
 		addTask(from, newTask, idTask)
-		setIdTask(i => i++)
+		setIdTask(i => ++i)
 		setNewTask('')
 	};
 

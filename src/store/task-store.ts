@@ -22,6 +22,7 @@ interface ITaskStore {
 	renameColumn: (oldColumn: string, newColumn: string) => void;
 	addTask: (column: string, texttask: string, idtask: number) => void;
 	removeTask: (column: string, idtask: number) => void;
+	toggleTask: (column: string, idtask: number) => void;
 }
 
 export const useTaskStore = create<ITaskStore>()(
@@ -123,6 +124,7 @@ export const useTaskStore = create<ITaskStore>()(
 				set(state => ({
 					columnNames,
 					columnTasks : {
+						// ...state.columnTasks,
 						[column]: {
 							id: state.columnTasks[column].id,
 							tasks: [...state.columnTasks[column].tasks.filter(t => t.id !== idtask)]
@@ -130,6 +132,27 @@ export const useTaskStore = create<ITaskStore>()(
 					}
 				}));
 			},
+
+			// * <Task> toggle {done} of a task
+			toggleTask: (column, idtask) => {
+				const { columnNames } = get();
+
+				set(state => ({
+					columnNames,
+					columnTasks: {
+						// ...state.columnTasks,
+						[column]: {
+							id: state.columnTasks[column].id,
+							tasks: [...state.columnTasks[column].tasks.filter(t => t.id !== idtask ), {
+								id: idtask,
+								text: state.columnTasks[column].tasks.find(t => t.id === idtask)!.text,
+								done: !state.columnTasks[column].tasks.find(t => t.id === idtask)!.done
+							} ]
+						}
+					}
+				}))
+
+			}
 		}),
 		{
 			name: "task-store",

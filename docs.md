@@ -8,7 +8,6 @@
 - [tailwind](https://tailwindcss.com/)
 
 ## Ideas
-- eliminar tareas
 - marcar tareas como hechas
 - cambiar texto de tarea
 - mover tareas
@@ -24,3 +23,4 @@
 - eliminar columnas [11-2-24]
 - cambiar titulo de columna [11-2-24]
 - añadir tareas [12-2-24]
+- eliminar tareas [13-2-24]

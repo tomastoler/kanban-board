@@ -102,6 +102,7 @@ export const useTaskStore = create<ITaskStore>()(
 				set((state) => ({
 					columnNames,
 					columnTasks: {
+						...state.columnTasks,
 						[column.toLowerCase()]: {
 							id: state.columnTasks[column].id,
 							tasks: [
@@ -123,9 +124,9 @@ export const useTaskStore = create<ITaskStore>()(
 
 				set(state => ({
 					columnNames,
-					columnTasks : {
-						// ...state.columnTasks,
-						[column]: {
+					columnTasks: {
+						...state.columnTasks,
+						[column.toLowerCase()]: {
 							id: state.columnTasks[column].id,
 							tasks: [...state.columnTasks[column].tasks.filter(t => t.id !== idtask)]
 						}
@@ -140,7 +141,7 @@ export const useTaskStore = create<ITaskStore>()(
 				set(state => ({
 					columnNames,
 					columnTasks: {
-						// ...state.columnTasks,
+						...state.columnTasks,
 						[column]: {
 							id: state.columnTasks[column].id,
 							tasks: [...state.columnTasks[column].tasks.filter(t => t.id !== idtask ), {

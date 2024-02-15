@@ -10,15 +10,21 @@ type TaskProps = {
 
 export default function Task({ from, text, id, done }: TaskProps) {
 
-    // const [isDone, setIsDone] = useState(done)
-
 	const removeTask = useTaskStore(state => state.removeTask)
 	const toggleTask = useTaskStore(state => state.toggleTask)
+
+	const handleOnDragStart = (e: React.DragEvent) => {
+		e.dataTransfer.setData('taskFrom', from)
+		e.dataTransfer.setData('taskId', id+'')
+		e.dataTransfer.setData('taskText', text)
+		e.dataTransfer.setData('taskDone', done + '')
+	}
 
 	return (
 		<div
 			className="bg-slate-400 border-2 border-slate-400 w-full rounded-md px-2 py-1 flex justify-between items-center cursor-move hover:border-sky-500 relative"
 			onDoubleClick={() => toggleTask(from, id)}
+			onDragStart={handleOnDragStart}
 			draggable
 		>
             {done ? (

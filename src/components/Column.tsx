@@ -1,28 +1,56 @@
-import React from "react";
-import { useState } from "react";
+import React, { useState } from "react";
 import { useTaskStore } from "../store/task-store";
 import AddTaskForm from "./add-task-form";
 import Task from "./task";
 
 export default function Column({ title }: { title: string }) {
+
+	// TODO: auto asign base on last id of the task array of the column
+	const [taskId, setTaskId] = useState(1) 
+
+	const addTask = useTaskStore(state => state.addTask)
+	const removeTask = useTaskStore(state => state.removeTask)
+	const toggleTask = useTaskStore(state => state.toggleTask)
+
 	const [showMenu, setShowMenu] = useState(false);
 
 	// * changing the title
-    const renameColumn = useTaskStore(state => state.renameColumn)
-	const columnTasks = useTaskStore(state => state.columnTasks)
+	const renameColumn = useTaskStore((state) => state.renameColumn);
+	const columnTasks = useTaskStore((state) => state.columnTasks);
 
 	const [showTitleForm, setShowTitleForm] = useState(false);
 	const [newTitle, setNewTitle] = useState("");
 	const handleSubmit = (e: React.FormEvent) => {
-		if (newTitle === '') return
+		if (newTitle === "") return;
 		e.preventDefault();
-        renameColumn(title, newTitle)
+		renameColumn(title, newTitle);
 		setNewTitle("");
-        setShowTitleForm(false)
+		setShowTitleForm(false);
 	};
 
+	// * dropping a task
+	const handleOnDrop = (e: React.DragEvent) => {
+		const ItaskFrom = e.dataTransfer.getData('taskFrom')
+		const ItaskText = e.dataTransfer.getData('taskText')
+		const ItaskDone = e.dataTransfer.getData('taskDone')	
+		const ItaskId = e.dataTransfer.getData('taskId')
+
+		// * remove task from prev column
+		removeTask(ItaskFrom, parseInt(ItaskId))
+
+		// * add task to current column
+		addTask(title, ItaskText, taskId)
+		ItaskDone === 'true' && toggleTask(title, taskId);	
+		setTaskId(i => ++i)
+
+	}
+
 	return (
-		<div className="w-72 min-w-72 h-min bg-gray-700 flex flex-col py-4 px-4 rounded-lg gap-2">
+		<div
+			className="w-72 min-w-72 h-min bg-gray-700 flex flex-col py-4 px-4 rounded-lg gap-2"
+			onDragOver={(e) => e.preventDefault()}
+			onDrop={handleOnDrop}
+		>
 			<header className="flex justify-between items-center w-full relative">
 				{showTitleForm ? (
 					<form onSubmit={handleSubmit} className="flex">
@@ -32,7 +60,7 @@ export default function Column({ title }: { title: string }) {
 							value={newTitle}
 							onChange={(e) => setNewTitle(e.target.value)}
 						/>
-                        {/* <button type="submit">C</button> */}
+						{/* <button type="submit">C</button> */}
 					</form>
 				) : (
 					<h1
@@ -54,17 +82,23 @@ export default function Column({ title }: { title: string }) {
 
 			{/* Task list */}
 			<div className="flex flex-col w-full h-full gap-2">
-					{columnTasks[title].tasks
-						.sort((a, b) => a.id > b.id ? 1 : -1)
-						.map(task => {
-							return <Task from={title} text={task.text} id={task.id} done={task.done} key={task.id} />
-						})
-					}
+				{columnTasks[title].tasks
+					.sort((a, b) => (a.id > b.id ? 1 : -1))
+					.map(task => {
+						return (
+							<Task
+								from={title}
+								text={task.text}
+								id={task.id}
+								done={task.done}
+								key={task.id}
+							/>
+						);
+					})}
 			</div>
 
 			{/* add task form */}
-			<AddTaskForm from={title} />
-
+			<AddTaskForm from={title} taskId={taskId} setTaskId={setTaskId} />
 		</div>
 	);
 }

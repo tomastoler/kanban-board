@@ -2,18 +2,27 @@ import React from "react";
 import { useState } from "react";
 import { useTaskStore } from "../store/task-store";
 
-export default function AddTaskForm({ from }: { from: string }) {
-	
-	const addTask = useTaskStore(state => state.addTask)
+type AddTaskFormProps = {
+	from: string;
+	taskId: number;
+	setTaskId: React.Dispatch<React.SetStateAction<number>>;
+};
+
+export default function AddTaskForm({
+	from,
+	taskId,
+	setTaskId,
+}: AddTaskFormProps) {
+	const addTask = useTaskStore((state) => state.addTask);
 
 	const [newTask, setNewTask] = useState("");
-	const [idTask, setIdTask] = useState(1)
+	// const [idTask, setIdTask] = useState(1);
 
 	const handleSubmit = (e: React.FormEvent) => {
 		e.preventDefault();
-		addTask(from, newTask, idTask)
-		setIdTask(i => ++i)
-		setNewTask('')
+		addTask(from, newTask, taskId);
+		setTaskId(++taskId);
+		setNewTask("");
 	};
 
 	return (

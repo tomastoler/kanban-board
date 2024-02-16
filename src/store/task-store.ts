@@ -65,7 +65,6 @@ export const useTaskStore = create<ITaskStore>()(
 					columnNames: state.columnNames.filter(
 						(c) => c !== oldColumn
 					),
-					oldColumn,
 					columnTasks,
 				}));
 			},

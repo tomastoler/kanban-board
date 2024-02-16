@@ -1,23 +1,30 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useTaskStore } from "../store/task-store";
 import AddTaskForm from "./add-task-form";
 import Task from "./task";
 
 export default function Column({ title }: { title: string }) {
 
-	// TODO: auto asign base on last id of the task array of the column
-	const [taskId, setTaskId] = useState(1) 
+	const [taskId, setTaskId] = useState(1)
 
+	// * task-store functions
+	const columnTasks = useTaskStore((state) => state.columnTasks);
 	const addTask = useTaskStore(state => state.addTask)
 	const removeTask = useTaskStore(state => state.removeTask)
 	const toggleTask = useTaskStore(state => state.toggleTask)
+	const renameColumn = useTaskStore((state) => state.renameColumn);
 
 	const [showMenu, setShowMenu] = useState(false);
 
-	// * changing the title
-	const renameColumn = useTaskStore((state) => state.renameColumn);
-	const columnTasks = useTaskStore((state) => state.columnTasks);
+	useEffect(() => {
+		let c = 1;
+		columnTasks[title].tasks.map(task => {
+			task.id = c++
+		})
+		setTaskId(c)
+	}, [columnTasks, title])
 
+	// * changing the title
 	const [showTitleForm, setShowTitleForm] = useState(false);
 	const [newTitle, setNewTitle] = useState("");
 	const handleSubmit = (e: React.FormEvent) => {

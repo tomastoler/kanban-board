@@ -12,7 +12,7 @@
 - borrar todo
 - ordenar tareas
 - elegir imagen del fondo
-- exportar tabla
+> - exportar tabla
 - importar tabla
 
 ## ideas implementadas
@@ -24,3 +24,8 @@
 - eliminar tareas [13-2-24]
 - marcar tareas como hechas [14-2-24]
 - mover tareas [15-2-24]
+
+## Colores (tailwind)
+- primary       ```gray-700```
+- secondary     ```slate-400```
+- tertiary      ```sky-500```

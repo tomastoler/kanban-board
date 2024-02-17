@@ -47,7 +47,7 @@ export const useTaskStore = create<ITaskStore>()(
 						columnTasks: {
 							...state.columnTasks,
 							[newColumn.toLowerCase()]: {
-								id: columnCount++,
+								id: ++columnCount,
 								tasks: [],
 							},
 						},

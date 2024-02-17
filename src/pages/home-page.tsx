@@ -7,9 +7,11 @@ export default function HomePage() {
 	const columnNames = useTaskStore((state) => state.columnNames);
 
 	return (
-		<main className="w-full h-full flex gap-4 px-20 py-10 overflow-x-scroll relative bg-sky-100">
-
-            <SidebarBtn/>
+		<main
+			className="w-full h-full flex gap-4 px-20 py-10 overflow-x-scroll relative bg-no-repeat bg-cover"
+			style={{ backgroundImage: "url(/bgimage2.jpg)" }}
+		>
+			<SidebarBtn />
 
 			{columnNames.map((column) => {
 				return <Column key={column} title={column} />;

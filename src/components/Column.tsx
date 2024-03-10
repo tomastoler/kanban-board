@@ -37,6 +37,7 @@ export default function Column({ title }: { title: string }) {
 
 	// * dropping a task
 	const handleOnDrop = (e: React.DragEvent) => {
+
 		const ItaskFrom = e.dataTransfer.getData('taskFrom')
 		const ItaskText = e.dataTransfer.getData('taskText')
 		const ItaskDone = e.dataTransfer.getData('taskDone')	
@@ -55,7 +56,7 @@ export default function Column({ title }: { title: string }) {
 	return (
 		<div
 			className="w-72 min-w-72 h-min bg-gray-700 flex flex-col py-4 px-4 rounded-lg gap-2"
-			onDragOver={(e) => e.preventDefault()}
+			onDragOver={(e) =>  e.preventDefault()}
 			onDrop={handleOnDrop}
 		>
 			<header className="flex justify-between items-center w-full relative">
@@ -67,7 +68,6 @@ export default function Column({ title }: { title: string }) {
 							value={newTitle}
 							onChange={(e) => setNewTitle(e.target.value)}
 						/>
-						{/* <button type="submit">C</button> */}
 					</form>
 				) : (
 					<h1

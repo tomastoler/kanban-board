@@ -23,6 +23,7 @@ interface ITaskStore {
 	addTask: (column: string, texttask: string, idtask: number) => void;
 	removeTask: (column: string, idtask: number) => void;
 	toggleTask: (column: string, idtask: number) => void;
+	renameTask: (column: string, idtask: number, newText: string) => void;
 }
 
 export const useTaskStore = create<ITaskStore>()(
@@ -152,6 +153,26 @@ export const useTaskStore = create<ITaskStore>()(
 					}
 				}))
 
+			},
+
+			// * <Task> rename {text} of a task
+			renameTask: (column, idTask, newText) => {
+				const { columnNames } = get();
+
+				set(state => ({
+					columnNames,
+					columnTasks: {
+						...state.columnTasks,
+						[column]: {
+							id: state.columnTasks[column].id,
+							tasks: [...state.columnTasks[column].tasks.filter(t => t.id !== idTask), {
+								id: idTask,
+								text: newText,
+								done: state.columnTasks[column].tasks.find(t => t.id === idTask)!.done
+							}]
+						}
+					}
+				}))
 			}
 		}),
 		{

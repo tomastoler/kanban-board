@@ -8,7 +8,6 @@
 - [tailwind](https://tailwindcss.com/)
 
 ## Ideas
-- cambiar texto de tarea
 - borrar todo
 - ordenar tareas
 - elegir imagen del fondo
@@ -24,6 +23,7 @@
 - marcar tareas como hechas [14-2-24]
 - mover tareas [15-2-24]
 - exportar tabla [19-2-24]
+- cambiar texto de tarea [10-3-24]
 
 ## Colores (tailwind)
 - primary       ```gray-700```

@@ -88,10 +88,9 @@ export default function SidebarBtn() {
 							/>
 						</button>
 
-						// TODO: re-design tis form
 						{showForm && (
 							<form
-								className="flex flex-col absolute top-0 right-96 bg-slate-300 rounded-xl"
+								className="flex flex-col absolute bg-slate-300 rounded-xl -translate-x-1/2 -translate-y-1/2 top-1/2 left-1/2"
 								onSubmit={handleSubmit}
 							>
 								<input

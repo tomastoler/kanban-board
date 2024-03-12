@@ -36,13 +36,13 @@ export default function Task({ from, text, id, done }: TaskProps) {
 			) : null}
 
 			{!isEditing ? (
-				<p className="flex text-md capitalize ml-2">{text}</p>
+				<p className="flex text-sm capitalize ml-2">{text}</p>
 			) : (
 				<form onSubmit={() => renameTask(from, id, newText)}>
 					<input
 						type="text"
 						placeholder="new text ..."
-						className="rounded px-1 w-40"
+						className="rounded px-1 w-28 text-sm outline-none"
 						value={newText}
 						onChange={(e) => setNewText(e.target.value)}
 					/>
@@ -51,14 +51,13 @@ export default function Task({ from, text, id, done }: TaskProps) {
 
 			<div className="flex">
 				<TaskButton onClick={() => setIsEditing((s) => !s)}>
-					<img src="/edit.svg" alt="edit icon" className="w-5 h-5" />
+					{isEditing
+						? <img src="close.svg" alt="close icon" className="w-4 h-4" />
+						: <img src="/edit.svg" alt="edit icon" className="w-4 h-4" />
+					}
 				</TaskButton>
 				<TaskButton onClick={() => removeTask(from, id)}>
-					<img
-						src="/delete.svg"
-						alt="delete icon"
-						className="w-5 h-5"
-					/>
+					<img src="/delete.svg" alt="delete icon" className="w-4 h-4" />
 				</TaskButton>
 			</div>
 		</div>

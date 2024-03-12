@@ -37,7 +37,7 @@ export default function Column({ title }: { title: string }) {
 
 	// * dropping a task
 	const handleOnDrop = (e: React.DragEvent) => {
-
+		
 		const ItaskFrom = e.dataTransfer.getData('taskFrom')
 		const ItaskText = e.dataTransfer.getData('taskText')
 		const ItaskDone = e.dataTransfer.getData('taskDone')	
@@ -55,35 +55,36 @@ export default function Column({ title }: { title: string }) {
 
 	return (
 		<div
-			className="w-72 min-w-72 h-min bg-gray-700 flex flex-col py-4 px-4 rounded-lg gap-2"
+			className="w-56 min-w-56 h-min bg-gray-700 flex flex-col py-4 px-4 rounded-lg gap-2"
 			onDragOver={(e) =>  e.preventDefault()}
 			onDrop={handleOnDrop}
 		>
 			<header className="flex justify-between items-center w-full relative">
 				{showTitleForm ? (
-					<form onSubmit={handleSubmit} className="flex">
+					<form onSubmit={handleSubmit} className="flex gap-2">
 						<input
-							className="outline-sky-400 rounded-md font-mono text-sm py-1 px-4"
+							className="rounded-md font-mono text-sm w-32 py-1 px-4 outline-none"
 							type="text"
+							placeholder="New title ..."
 							value={newTitle}
 							onChange={(e) => setNewTitle(e.target.value)}
 						/>
+						<button onClick={() => setShowTitleForm(false)}>
+							<img src="/close.svg" alt="close icon" className="w-4 h-4" />
+						</button>
 					</form>
 				) : (
-					<h1
-						className="font-mono font-medium text-xl capitalize text-white"
-						onDoubleClick={() => setShowTitleForm(true)}
-					>
+					<h1 className="font-mono font-medium text-lg capitalize text-white" >
 						{title}
 					</h1>
 				)}
 
 				<button onClick={() => setShowMenu((sm) => !sm)}>
-					<img src="/options.svg" alt="option icon" />
+					<img src="/options.svg" alt="option icon" className="w-5 h-5" />
 				</button>
 
 				{showMenu && (
-					<OptionsMenu from={title} closeMenu={setShowMenu} />
+					<OptionsMenu from={title} closeMenu={setShowMenu} openForm={setShowTitleForm} />
 				)}
 			</header>
 
@@ -113,14 +114,16 @@ export default function Column({ title }: { title: string }) {
 function OptionsMenu({
 	from,
 	closeMenu,
+	openForm
 }: {
 	from: string;
 	closeMenu: React.Dispatch<React.SetStateAction<boolean>>;
+	openForm: React.Dispatch<React.SetStateAction<boolean>>
 }) {
 	const removeColumn = useTaskStore((state) => state.removeColumn);
 
 	return (
-		<div className="flex flex-col rounded-lg bg-slate-600 shadow-sm min-w-32 h-auto absolute top-8 right-0 py-2 px-4 z-20">
+		<div className="flex flex-col rounded-lg bg-slate-600 shadow-sm min-w-32 h-auto absolute top-8 right-0 py-2 px-4 z-20 gap-2">
 			<button
 				className="flex justify-between items-center px-2"
 				onClick={() => {
@@ -129,7 +132,17 @@ function OptionsMenu({
 				}}
 			>
 				<p className="text-sm">Delete</p>
-				<img className="h-5 w-5" src="/delete.svg" alt="" />
+				<img className="h-4 w-4" src="/delete.svg" alt="" />
+			</button>
+			<button
+				className="flex justify-between items-center px-2"
+				onClick={() => {
+					openForm(true)
+					closeMenu(false);
+				}}
+			>
+				<p className="text-sm">Edit</p>
+				<img className="h-4 w-4" src="/edit.svg" alt="" />
 			</button>
 		</div>
 	);

@@ -20,6 +20,7 @@ export default function AddColumnForm() {
 			<input
 				type="text"
 				className="rounded-md font-mono text-sm py-1 px-4 outline-none"
+				placeholder="Add a column ..."
                 value={column}
                 onChange={e => setColumn(e.target.value)}
 			/>
